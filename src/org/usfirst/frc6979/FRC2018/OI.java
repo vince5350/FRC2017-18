@@ -9,13 +9,15 @@
 // it from being updated in the future.
 
 
-package org.usfirst.frc6769.FRC2018;
+package org.usfirst.frc6979.FRC2018;
 
-import org.usfirst.frc6769.FRC2018.commands.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import org.usfirst.frc6979.FRC2018.commands.*;
+import org.usfirst.frc6979.FRC2018.subsystems.*;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.*;
-import org.usfirst.frc6769.FRC2018.subsystems.*;
 
 
 /**

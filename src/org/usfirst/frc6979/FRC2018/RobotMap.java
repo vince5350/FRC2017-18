@@ -18,12 +18,12 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  */
 public class RobotMap {
 	
-    public static WPI_TalonSRX drivefrontLeft;
-    public static WPI_TalonSRX drivebackLeft;
-    public static SpeedControllerGroup driveLeft;
-    public static WPI_TalonSRX drivefrontRight;
-    public static WPI_TalonSRX drivebackRight;
-    public static SpeedControllerGroup driveRight;
+    private static WPI_TalonSRX drivefrontLeft;
+    private static WPI_TalonSRX drivebackLeft;
+    private static SpeedControllerGroup driveLeft;
+    private static WPI_TalonSRX drivefrontRight;
+    private static WPI_TalonSRX drivebackRight;
+    private static SpeedControllerGroup driveRight;
     public static DifferentialDrive driveDifferentialDrive;
     
     public static DigitalInput elevatorHighLimit;
@@ -86,4 +86,6 @@ public class RobotMap {
 
 
     }
+    
+
 }

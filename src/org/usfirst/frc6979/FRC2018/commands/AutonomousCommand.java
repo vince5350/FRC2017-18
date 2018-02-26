@@ -10,7 +10,6 @@
 
 
 package org.usfirst.frc6979.FRC2018.commands;
-import org.usfirst.frc6979.FRC2018.Robot;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
@@ -19,10 +18,10 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 import org.usfirst.frc6979.FRC2018.RobotMap;
 
-import edu.wpi.first.wpilibj.command.Command;
 
 public class AutonomousCommand extends Command {
-	private Timer autoTimer;
+	
+	private Timer robotTimer;
 	public DriverStation DS;
 	private final DifferentialDrive autoDrive = RobotMap.driveDifferentialDrive;
 	int robotLocation;
@@ -39,23 +38,23 @@ public class AutonomousCommand extends Command {
 	
 	
     public AutonomousCommand() {
-    	autoTimer.start();
+    	
     	
     	
     	//For Left Side
     	
     	
     	if(robotLocation == positionLeft) {
-    		autoTimer.reset();
-    		while(autoTimer.get() < 6) {
+    		robotTimer.reset();
+    		while(robotTimer.get() < 6) {
     			autoDrive.tankDrive(DRIVE_SPEED, DRIVE_SPEED);
     		}
-    		while(autoTimer.get() < 1) {
+    		while(robotTimer.get() < 1) {
     			autoDrive.tankDrive(TURN_SPEED, -TURN_SPEED);
     		}
-    		/*TODO: Add colour sensor input to determine switch colour
-    		 *		Do this by adding colour class		
-    		 */
+    		//TODO: Add colour sensor input to determine switch colour
+    		//		Do this by adding colour class		
+    		 
     		
     		//Check if alliance colour matches switch colour
     		if(robotColour == switchColour ) {
@@ -79,8 +78,8 @@ public class AutonomousCommand extends Command {
     	
     	//For Middle Side
     	if(robotLocation == positionMiddle) {
-    		autoTimer.reset();
-    		while(autoTimer.get() < 6) {
+    		robotTimer.reset();
+    		while(robotTimer.get() < 6) {
     			autoDrive.tankDrive(MIDDLE_DRIVE, MIDDLE_DRIVE);
     		}
 
@@ -94,7 +93,7 @@ public class AutonomousCommand extends Command {
     			
     		}
     		
-    		//If colours don't match and not inva
+    		//If colours don't match and not invalid
     		else if ((robotColour != switchColour) && (switchColour != switchInvalid)) {
     			
     		} 
@@ -105,11 +104,11 @@ public class AutonomousCommand extends Command {
     	
     	//For Right Side
     	if(robotLocation == positionRight) {
-    		autoTimer.reset();
-    		while(autoTimer.get() < 6) {
+    		robotTimer.reset();
+    		while(robotTimer.get() < 6) {
     			autoDrive.tankDrive(DRIVE_SPEED, DRIVE_SPEED);
     		}
-    		while(autoTimer.get() < 1) {
+    		while(robotTimer.get() < 1) {
     			autoDrive.tankDrive(-TURN_SPEED, TURN_SPEED);
     		}
 
@@ -123,7 +122,7 @@ public class AutonomousCommand extends Command {
     			
     		}
     		
-    		//If colours don't match and not inva
+    		//If colours don't match and not invalid
     		else if ((robotColour != switchColour) && (switchColour != switchInvalid)) {
     			
     		} 
@@ -132,12 +131,15 @@ public class AutonomousCommand extends Command {
     	
     	
     }
+    	
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
     	robotLocation = DS.getLocation();
     	robotColour = DS.getAlliance();
+    	robotTimer.reset();
+    	robotTimer.start();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -162,3 +164,4 @@ public class AutonomousCommand extends Command {
     protected void interrupted() {
     }
 }
+

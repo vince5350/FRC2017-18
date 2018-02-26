@@ -6,13 +6,13 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 import org.usfirst.frc6979.FRC2018.OI;
 import org.usfirst.frc6979.FRC2018.RobotMap;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
+
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 
 
 /**
- *
+ * m
  */
 public class Drive extends Subsystem {
 
@@ -26,11 +26,11 @@ public class Drive extends Subsystem {
     private final SpeedControllerGroup driveLeft = RobotMap.driveLeft;
     private final SpeedControllerGroup driveRight = RobotMap.driveRight;
     */
+	
     
     private final DifferentialDrive differentialDrive = RobotMap.driveDifferentialDrive;
-    
     OI oi = new OI();
-
+	
     
     @Override
     public void initDefaultCommand() {
@@ -40,7 +40,7 @@ public class Drive extends Subsystem {
         // setDefaultCommand(new MySpecialCommand());
     }
 
-    @Override
+    
     public void periodic() {
     	
     	
@@ -49,13 +49,17 @@ public class Drive extends Subsystem {
     	
     	// Instantiate OI
     	
-       
-    	differentialDrive.tankDrive(oi.getJoyY(Hand.kLeft), oi.getJoyY(Hand.kRight));
+    	differentialDrive.tankDrive(oi.getJoyYLeft(), oi.getJoyYRight());
     	
     }
+    
+   
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-
+    
+    public void stop() {
+    	differentialDrive.tankDrive(0,0);
+    }
 }
 

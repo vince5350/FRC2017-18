@@ -38,6 +38,14 @@ public class Elevator extends Subsystem {
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
+    
+   public boolean getTopLimit(){
+    	return this.topElevLimit.get();
+   }
+   
+   public void setElevatorSpeed(double speed) {
+	   this.elevator.set(speed);
+   }
 
 }
 

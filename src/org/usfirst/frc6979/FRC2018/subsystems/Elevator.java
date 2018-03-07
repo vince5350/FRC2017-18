@@ -46,6 +46,10 @@ public class Elevator extends Subsystem {
    public void setElevatorSpeed(double speed) {
 	   this.elevator.set(speed);
    }
+   
+   public boolean getBottomLimit() {
+	   return this.evaltorLowLimit.get();
+   }
 
 }
 

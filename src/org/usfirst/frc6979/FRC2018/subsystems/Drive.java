@@ -31,6 +31,10 @@ public class Drive extends Subsystem {
     private final DifferentialDrive differentialDrive = RobotMap.driveDifferentialDrive;
     OI oi = new OI();
 	
+    private double joyYLeftRamped;
+    private double joyYLeftRampTime;
+    private double joyYRightRamped;
+    private double joyYRightRampTime;
     
     @Override
     public void initDefaultCommand() {
@@ -49,7 +53,9 @@ public class Drive extends Subsystem {
     	
     	// Instantiate OI
     	
-    	differentialDrive.tankDrive(oi.getJoyYLeft(), oi.getJoyYRight());
+    	differentialDrive.tankDrive(oi.ramp(oi.getJoyYLeft(), this.joyYLeftRamped, 0.1, 1, this.joyYLeftRampTime), 
+    			oi.ramp(oi.getJoyYRight(), this.joyYRightRamped, 0.1, 1, this.joyYRightRampTime));
+    	
     	
     }
     

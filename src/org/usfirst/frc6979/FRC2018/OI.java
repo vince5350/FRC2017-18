@@ -29,9 +29,12 @@ public class OI {
     // One type of button is a joystick button which is any button on a joystick.
     // You create one by telling it which joystick it's on and which button
     // number it is.
+	
+	
     // Joystick stick = new Joystick(port);
     // Button button = new JoystickButton(stick, buttonNumber);
 
+	
     // There are a few additional built in buttons you can use. Additionally,
     // by subclassing Button you can create custom triggers and bind those to
     // commands the same as any other Button.
@@ -72,7 +75,7 @@ public class OI {
         
     	
     	
-        buttonB = new JoystickButton(driveController, 1);
+        buttonB = new JoystickButton(driveController, 2);
         buttonB.whileHeld(new ElevatorUp());
         buttonA = new JoystickButton(driveController, 1);
         buttonA.whileHeld(new ElevatorDown());
@@ -104,6 +107,11 @@ public class OI {
     public double getJoyYLeft() {
     	double joyYLeft = driveController.getY(Hand.kLeft);
     	return joyYLeft;
+    }
+    
+    public double getRightTrigger() {
+    	double joyRT = driveController.getTriggerAxis(Hand.kRight);
+    	return joyRT;
     }
     
     public double ramp(double valueSP, double valueTrack, double rampRateUp,double rampRateDown, double oldTime) {

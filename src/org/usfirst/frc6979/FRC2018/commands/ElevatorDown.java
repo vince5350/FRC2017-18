@@ -10,17 +10,19 @@
 
 
 package org.usfirst.frc6979.FRC2018.commands;
-import org.usfirst.frc6979.FRC2018.subsystems.Elevator;
 
+import org.usfirst.frc6979.FRC2018.subsystems.Elevator;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
  */
 public class ElevatorDown extends Command {
-	
-	//Instantiate Elevator
+
 	Elevator elevator = new Elevator();
+	
+	double downSpeed = 0.2;
 
 
     public ElevatorDown() {
@@ -36,19 +38,32 @@ public class ElevatorDown extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-    	
-    	elevator.runElevatorDown(-0.3);
+
+    	double speed;
+    	if (elevator.getBottomLimit()) {
+    		speed = this.downSpeed;
+    	} else {
+    		speed = 0;
+    	}
+    	elevator.setElevatorSpeed(speed);
+    	SmartDashboard.putNumber("Motor Speed", speed);
+
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
+    	if (elevator.getBottomLimit()) {
+    		return true;
+    	} else {
         return false;
+    	}
     }
 
     // Called once after isFinished returns true
     @Override
     protected void end() {
+    	elevator.setElevatorSpeed(0);
     }
 
     // Called when another command which requires one or more of the same

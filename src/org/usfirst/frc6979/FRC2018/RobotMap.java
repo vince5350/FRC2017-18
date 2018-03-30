@@ -3,7 +3,10 @@
 package org.usfirst.frc6979.FRC2018;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -43,6 +46,10 @@ public class RobotMap {
     //Arms
     public static WPI_TalonSRX leftArm;
     public static WPI_TalonSRX rightArm;
+
+    //Pneumatic Systems for Arm
+    public static Compressor compressorArm = new Compressor(0);
+    public static Solenoid solenoidArm = new Solenoid(0);
     
     //Other
     public static Spark winchMotor;
@@ -54,6 +61,8 @@ public class RobotMap {
     	 * - Fix depreciated telemetry
     	 * 
     	 */
+    	
+    	
     	
     	/*
     	 * INSTANTIATE DRIVE
@@ -85,6 +94,9 @@ public class RobotMap {
         driveDifferentialDrive.setExpiration(0.1);
         driveDifferentialDrive.setMaxOutput(1.0);
         
+        
+        
+        
         /*
          * INSTANTIATE ELEVATOR IO
          */
@@ -100,6 +112,9 @@ public class RobotMap {
         elevatorLowLimit = new DigitalInput(1);
         //LiveWindow.addSensor("Elevator", "bottomElevLimit", elevatorbottomElevLimit);
         
+        
+        
+        
         /*
          * INSTANTIATE LIFT IO
          */
@@ -112,20 +127,32 @@ public class RobotMap {
         //LiveWindow.addSensor("Elevator", "topElevLimit", elevatortopElevLimit);
         
         //Elevator Low Limit Switch
-        //liftLowLimit = new DigitalInput(1);
+        liftLowLimit = new DigitalInput(1);
         //LiveWindow.addSensor("Elevator", "bottomElevLimit", elevatorbottomElevLimit);
 
+        
+        
         
         /*
          * INSTANTIATE ARMS IO
          */
         
         //Arm Speed Controllers
-        /*
         leftArm = new WPI_TalonSRX(9);
         rightArm = new WPI_TalonSRX(8);
         rightArm.setInverted(true);
-        rightArm.follow(leftArm); */
+        rightArm.follow(leftArm); 
+        
+        
+        //When true, PCM automatically turns on compressor when pressure switch is closed
+        compressorArm.setClosedLoopControl(true);
+        
+        //Checks compressor status
+        
+        boolean compEnabled = compressorArm.enabled();
+        boolean pressureSwitch = compressorArm.getPressureSwitchValue();
+        double compCurrent = compressorArm.getCompressorCurrent();
+        
         
     }
 }

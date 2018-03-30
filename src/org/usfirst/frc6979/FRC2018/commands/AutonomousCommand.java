@@ -17,6 +17,9 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 import org.usfirst.frc6979.FRC2018.RobotMap;
+import org.usfirst.frc6979.FRC2018.subsystems.Arm;
+import org.usfirst.frc6979.FRC2018.subsystems.Elevator;
+import org.usfirst.frc6979.FRC2018.subsystems.Lift;
 
 
 public class AutonomousCommand extends Command {
@@ -24,10 +27,20 @@ public class AutonomousCommand extends Command {
 	private Timer robotTimer;
 	public DriverStation DS;
 	private final DifferentialDrive autoDrive = RobotMap.driveDifferentialDrive;
+	private Lift lift;
+	private Elevator elevator;
+	private Arm arm;
+	
 	int robotLocation;
+	
+	
+	private double LIFT_SPEED = 0.2;
+	private double ELEVATOR_SPEED = 0.3;
 	private double TURN_SPEED = 0.4;
 	private double MIDDLE_DRIVE = 0.3;
 	private double DRIVE_SPEED = 0.5;
+	
+	
 	Alliance robotColour;
 	int positionLeft = 1;
 	int positionRight = 3;
@@ -38,17 +51,32 @@ public class AutonomousCommand extends Command {
 	
 	
     public AutonomousCommand() {
+    	robotColour = DS.getAlliance();
+    	switchInvalid = Alliance.Invalid;
+    	robotLocation = DS.getLocation();
+    	
+    	//Raise lift to clear switch; Should only need a foot but extra space just in case.
+    	robotTimer.reset();
+    	while(robotTimer.get() < 3) {
+    		if(!Lift.getTopLimit() || Lift.getBottomLimit()) {
+    			lift.setLiftSpeed(-0.5);
+    		} else if (Lift.getTopLimit()) {
+    			lift.setLiftSpeed(0);
+    		}
+    	}
+    	
+    	
     	
     	
     	
     	//For Left Side
-    	
-    	
     	if(robotLocation == positionLeft) {
     		robotTimer.reset();
     		while(robotTimer.get() < 6) {
     			autoDrive.tankDrive(DRIVE_SPEED, DRIVE_SPEED);
     		}
+    		
+    		robotTimer.reset();
     		while(robotTimer.get() < 1) {
     			autoDrive.tankDrive(TURN_SPEED, -TURN_SPEED);
     		}
@@ -58,15 +86,23 @@ public class AutonomousCommand extends Command {
     		
     		//Check if alliance colour matches switch colour
     		if(robotColour == switchColour ) {
-    			
+    			lift.setLiftSpeed(LIFT_SPEED);
     		} 
     		
     		//If can't find any colour
     		else if (switchColour == switchInvalid) {
+    			robotTimer.reset();
+    			while(robotTimer.get() < 1) {
+    				autoDrive.tankDrive(-TURN_SPEED, TURN_SPEED);
+    			}
     			
+    			robotTimer.reset();
+    			while(robotTimer.get() < 1) {
+    				autoDrive.tankDrive(-DRIVE_SPEED, -DRIVE_SPEED);
+    			}
     		}
     		
-    		//If colours don't match and not inva
+    		//If colours don't match and not invalid
     		else if ((robotColour != switchColour) && (switchColour != switchInvalid)) {
     			
     		} 
@@ -76,22 +112,75 @@ public class AutonomousCommand extends Command {
     	}
     	
     	
+    	
+    	
     	//For Middle Side
     	if(robotLocation == positionMiddle) {
     		robotTimer.reset();
+    		//Go forwards for 6 seconds
     		while(robotTimer.get() < 6) {
     			autoDrive.tankDrive(MIDDLE_DRIVE, MIDDLE_DRIVE);
     		}
+    		robotTimer.reset();
+    		
+    		//Turn 90 degrees (Number change needed)
+    		while(robotTimer.get() < 1) {
+    			autoDrive.tankDrive(TURN_SPEED, -TURN_SPEED);
+    		}
+    		robotTimer.reset();
+    		
+    		//Go right for 4 seconds
+    		while(robotTimer.get() < 4) {
+    			autoDrive.tankDrive(MIDDLE_DRIVE, MIDDLE_DRIVE);
+    		}
+    		robotTimer.reset();
+    		
+    		//Turn to face forwards
+    		while(robotTimer.get() < 1) {
+    			autoDrive.tankDrive(-TURN_SPEED, TURN_SPEED);
+    		}
+    		robotTimer.reset();
+    		
+    		//Drive forward a second
+    		while(robotTimer.get() < 1) {
+    			autoDrive.tankDrive(DRIVE_SPEED, DRIVE_SPEED);
+    		}
+    		robotTimer.reset();
+    		
+    		//Turn to face left
+    		while(robotTimer.get() < 1) {
+    			autoDrive.tankDrive(-TURN_SPEED, TURN_SPEED);
+    		}
 
+    		
     		//Check if alliance colour matches switch colour
     		if(robotColour == switchColour ) {
-    			
+    			lift.setLiftSpeed(LIFT_SPEED);
     		} 
+    		
     		
     		//If can't find any colour
     		else if (switchColour == switchInvalid) {
+    			robotTimer.reset();
+    			while(robotTimer.get() < 1) {
+    				//Turn to face front
+    				autoDrive.tankDrive(TURN_SPEED, -TURN_SPEED);
+    			}
+    			
+    			robotTimer.reset();
+    			while(robotTimer.get() < 1) {
+    				//Drive to correct
+    				autoDrive.tankDrive(-DRIVE_SPEED, -DRIVE_SPEED);
+    			}
+    			
+    			robotTimer.reset();
+    			while(robotTimer.get() < 1) {
+    				//Turn to face switch again
+    				autoDrive.tankDrive(-TURN_SPEED, TURN_SPEED);
+    			}
     			
     		}
+    		
     		
     		//If colours don't match and not invalid
     		else if ((robotColour != switchColour) && (switchColour != switchInvalid)) {
@@ -100,6 +189,8 @@ public class AutonomousCommand extends Command {
     		//Stops motors.
     		autoDrive.tankDrive(0, 0);
     	}
+    	
+    	
     	
     	
     	//For Right Side
@@ -112,15 +203,26 @@ public class AutonomousCommand extends Command {
     			autoDrive.tankDrive(-TURN_SPEED, TURN_SPEED);
     		}
 
+    		
     		//Check if alliance colour matches switch colour
     		if(robotColour == switchColour ) {
-    			
+    			lift.setLiftSpeed(LIFT_SPEED);
     		} 
+    		
     		
     		//If can't find any colour
     		else if (switchColour == switchInvalid) {
+    			robotTimer.reset();
+    			while(robotTimer.get() < 1) {
+    				autoDrive.tankDrive(TURN_SPEED, -TURN_SPEED);
+    			}
     			
+    			robotTimer.reset();
+    			while(robotTimer.get() < 1) {
+    				autoDrive.tankDrive(-DRIVE_SPEED, -DRIVE_SPEED);
+    			}
     		}
+    		
     		
     		//If colours don't match and not invalid
     		else if ((robotColour != switchColour) && (switchColour != switchInvalid)) {
@@ -128,7 +230,6 @@ public class AutonomousCommand extends Command {
     		} 
     		autoDrive.tankDrive(0, 0);
     	}
-    	
     	
     }
     	
@@ -164,4 +265,3 @@ public class AutonomousCommand extends Command {
     protected void interrupted() {
     }
 }
-

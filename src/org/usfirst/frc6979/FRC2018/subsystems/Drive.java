@@ -2,6 +2,7 @@ package org.usfirst.frc6979.FRC2018.subsystems;
 
 
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -19,7 +20,8 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 public class Drive extends Subsystem {
 	
-    
+	private Timer robotTimer = new Timer();
+
     private final DifferentialDrive differentialDrive = RobotMap.driveDifferentialDrive;
     OI oi = new OI();
     Elevator elevator = new Elevator();
@@ -47,7 +49,7 @@ public class Drive extends Subsystem {
     	//SmartDashboard.getNumber("Pneumatic Pressure", RobotMap.compressorArm.getCompressorCurrent());    	
     	// Put code here to be run every loop
     	// Instantiate OI
-    	
+    	robotTimer.start();
     	//Motor Output Maximums
     	differentialDrive.setMaxOutput(0.8);
         RobotMap.elevator.setNeutralMode(NeutralMode.Brake);
@@ -60,6 +62,14 @@ public class Drive extends Subsystem {
     	differentialDrive.tankDrive(oi.getJoyYLeft()/1.5, oi.getJoyYRight()/1.5);   
     	
     	
+    	//Auto Test
+    	//TODO COMMENT OUT!!!!
+    	if(oi.getStart()) {
+    		robotTimer.reset();
+    		if(robotTimer.get() < 3) {
+    			differentialDrive.tankDrive(0.5, 0.5);
+    		}
+    	}
     	
     	/*
     	 *  ELEVATOR COMMAND

@@ -101,6 +101,10 @@ public class OI {
     	boolean joySelect = driveController.getBackButton();
     	return joySelect;
     }
+    public boolean getStart() {
+    	boolean joyStart = driveController.getStartButton();
+    	return joyStart;
+    }
     
     public boolean getRightBumper() {
     	boolean joyBumpR = driveController.getBumper(Hand.kRight);

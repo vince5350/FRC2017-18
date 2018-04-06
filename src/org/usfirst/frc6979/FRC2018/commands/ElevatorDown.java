@@ -24,11 +24,11 @@ public class ElevatorDown extends Command {
     protected void execute() {
     	double speed;
     	SmartDashboard.putBoolean("ED Active", true);
-    	if (elevator.getBottomLimit()) {
+    	/*if (elevator.getBottomLimit()) {
     		speed = this.downSpeed;
     	} else {
     		speed = 0;
-    	}
+    	} */ speed = this.downSpeed;
     	elevator.setElevatorSpeed(speed);
     	SmartDashboard.putNumber("Elevator Motor Speed", speed);
     }
@@ -36,12 +36,12 @@ public class ElevatorDown extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-    	if (elevator.getBottomLimit()) {
+    /*	if (elevator.getBottomLimit()) {
     		return true;
     	} else {
     		return false;
+    	} */ return false;
     	}
-    }
 
     // Called once after isFinished returns true
     @Override

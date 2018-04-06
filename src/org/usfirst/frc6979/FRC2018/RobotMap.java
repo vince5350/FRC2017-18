@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -40,19 +41,20 @@ public class RobotMap {
     
     //Lift
     public static DigitalInput liftHighLimit;
-    public static WPI_TalonSRX lift;
+    public static Spark lift;
     public static DigitalInput liftLowLimit;
     
     //Arms
     public static WPI_TalonSRX leftArm;
+    
     public static WPI_TalonSRX rightArm;
 
     //Pneumatic Systems for Arm
-    public static Compressor compressorArm = new Compressor(0);
-    public static Solenoid solenoidArm = new Solenoid(0);
+    public static Compressor compressorArm = new Compressor(8);
+    public static DoubleSolenoid solenoidArm = new DoubleSolenoid(8, 0, 1);
     
     //Other
-    public static Spark winchMotor;
+    public static WPI_TalonSRX winchMotor;
     
 
     public static void init() {
@@ -68,7 +70,7 @@ public class RobotMap {
     	 * INSTANTIATE DRIVE
     	 */
     	// Instantiate left Speed Controller group
-        driveFrontLeft = new WPI_TalonSRX(0);
+        driveFrontLeft = new WPI_TalonSRX(8);
         driveBackLeft = new WPI_TalonSRX(2);
         driveLeft = new SpeedControllerGroup(driveFrontLeft, driveBackLeft  );
         	//LiveWindow.addActuator("Drive", "d_Left", drived_Left);
@@ -79,11 +81,7 @@ public class RobotMap {
         driveRight = new SpeedControllerGroup(driveFrontRight, driveBackRight  );
         
       	//LiveWindow.addActuator("Drive", "d_Right", drived_Right);
-        //Set neutral mode for speed controllers
-        driveFrontLeft.setNeutralMode(com.ctre.phoenix.motorcontrol.NeutralMode.Brake);
-        driveBackLeft.setNeutralMode(com.ctre.phoenix.motorcontrol.NeutralMode.Brake);
-        driveFrontRight.setNeutralMode(com.ctre.phoenix.motorcontrol.NeutralMode.Brake);
-        driveBackRight.setNeutralMode(com.ctre.phoenix.motorcontrol.NeutralMode.Brake);
+
         
         // Instantiate Differential Drive
         driveDifferentialDrive = new DifferentialDrive(driveLeft, driveRight);
@@ -102,15 +100,16 @@ public class RobotMap {
          */
         
         // Elevator Speed Controller
-        elevator = new WPI_TalonSRX(1);
+        elevator = new WPI_TalonSRX(6);
         
         // Elevator High Limit Switch
         elevatorHighLimit = new DigitalInput(5);
         //LiveWindow.addSensor("Elevator", "topElevLimit", elevatortopElevLimit);
         
         //Elevator Low Limit Switch
-        elevatorLowLimit = new DigitalInput(1);
+        //elevatorLowLimit = new DigitalInput(1);
         //LiveWindow.addSensor("Elevator", "bottomElevLimit", elevatorbottomElevLimit);
+
         
         
         
@@ -120,17 +119,19 @@ public class RobotMap {
          */
         
         //Lift Speed Controller
-        lift = new WPI_TalonSRX(5);
+        lift = new Spark(0);
         
-        // Elevator High Limit Switch
+        //Lift High Limit Switch
         liftHighLimit = new DigitalInput(3);
         //LiveWindow.addSensor("Elevator", "topElevLimit", elevatortopElevLimit);
         
-        //Elevator Low Limit Switch
+        //Lift Low Limit Switch
         liftLowLimit = new DigitalInput(1);
         //LiveWindow.addSensor("Elevator", "bottomElevLimit", elevatorbottomElevLimit);
-
         
+        
+        //Winch
+        winchMotor = new WPI_TalonSRX(1); //TODO: Make sure this is in BRAKE MODE
         
         
         /*
@@ -138,21 +139,15 @@ public class RobotMap {
          */
         
         //Arm Speed Controllers
-        leftArm = new WPI_TalonSRX(9);
-        rightArm = new WPI_TalonSRX(8);
+        leftArm = new WPI_TalonSRX(7);
+        
+        rightArm = new WPI_TalonSRX(5);
         rightArm.setInverted(true);
         rightArm.follow(leftArm); 
         
         
         //When true, PCM automatically turns on compressor when pressure switch is closed
         compressorArm.setClosedLoopControl(true);
-        
-        //Checks compressor status
-        
-        boolean compEnabled = compressorArm.enabled();
-        boolean pressureSwitch = compressorArm.getPressureSwitchValue();
-        double compCurrent = compressorArm.getCompressorCurrent();
-        
-        
+        compressorArm.start();
     }
 }

@@ -2,19 +2,15 @@ package org.usfirst.frc6979.FRC2018.subsystems;
 
 
 
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.command.Subsystem;
-
 import org.usfirst.frc6979.FRC2018.OI;
 import org.usfirst.frc6979.FRC2018.RobotMap;
 
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import org.usfirst.frc6979.FRC2018.subsystems.*;
-
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 public class Drive extends Subsystem {
@@ -49,7 +45,7 @@ public class Drive extends Subsystem {
     	// Instantiate OI
     	
     	//Motor Output Maximums
-    	differentialDrive.setMaxOutput(0.8);
+    	differentialDrive.setMaxOutput(0.9);
         RobotMap.elevator.setNeutralMode(NeutralMode.Brake);
 
     	
@@ -57,7 +53,7 @@ public class Drive extends Subsystem {
     	/*
     	 *  DRIVE COMMAND
     	 */
-    	differentialDrive.tankDrive(oi.getJoyYLeft()/1.5, oi.getJoyYRight()/1.5);   
+    	differentialDrive.tankDrive(oi.getJoyYLeft(), oi.getJoyYRight());   
     	
     	
     	
@@ -122,7 +118,7 @@ public class Drive extends Subsystem {
     	
     	
     	if(oi.getSelect()) {
-    		RobotMap.winchMotor.set(0.3);
+    		RobotMap.winchMotor.set(0.6);
     	} else {
     		RobotMap.winchMotor.set(0);
     	}

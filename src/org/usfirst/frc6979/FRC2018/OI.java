@@ -11,13 +11,10 @@
 
 package org.usfirst.frc6979.FRC2018;
 
-import org.usfirst.frc6979.FRC2018.commands.ElevatorDown;
-import org.usfirst.frc6979.FRC2018.commands.ElevatorUp;
-
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.buttons.*;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 
 /**

@@ -10,18 +10,17 @@
 
 
 package org.usfirst.frc6979.FRC2018.commands;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-
 import org.usfirst.frc6979.FRC2018.Robot;
 import org.usfirst.frc6979.FRC2018.RobotMap;
 import org.usfirst.frc6979.FRC2018.subsystems.Arm;
 import org.usfirst.frc6979.FRC2018.subsystems.Elevator;
 import org.usfirst.frc6979.FRC2018.subsystems.Lift;
+
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 
 public class AutonomousCommand extends Command {

@@ -10,21 +10,17 @@
 
 
 package org.usfirst.frc6979.FRC2018.commands;
+import org.usfirst.frc6979.FRC2018.RobotMap;
+
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
-import org.usfirst.frc6979.FRC2018.RobotMap;
-import org.usfirst.frc6979.FRC2018.subsystems.Arm;
-import org.usfirst.frc6979.FRC2018.subsystems.Elevator;
-import org.usfirst.frc6979.FRC2018.subsystems.Lift;
-
 
 public class AutonomousStraight extends Command {
 	
-	private Timer robotTimer;
+	private Timer robotTimer = new Timer();
 	public DriverStation DS;
 	private final DifferentialDrive autoDrive = RobotMap.driveDifferentialDrive;
 
@@ -33,13 +29,14 @@ public class AutonomousStraight extends Command {
 	int robotLocation;
 	
 	private double TURN_SPEED = (1/3);
+	private boolean codeDone = false;
 
 	private double DRIVE_SPEED = 0.5;
 	
 	
-	int positionLeft = 1;
-	int positionRight = 3;
-	int positionMiddle = 2;
+	//int positionLeft = 1;
+	//int positionRight = 3;
+	//int positionMiddle = 2;
 	
 	//Used for turn
 		//Counter clockwise
@@ -49,11 +46,13 @@ public class AutonomousStraight extends Command {
 	
 	
     public AutonomousStraight() {
-    	robotTimer.start();
-    	robotLocation = DS.getLocation();
-    	
-    	
-    	
+    	//while (Timer.getMatchTime() < 2) {
+    	//	autoDrive.tankDrive(-DRIVE_SPEED, -DRIVE_SPEED);
+    	//	
+    	//}
+    	//autoDrive.tankDrive(0,0);
+    	//this.codeDone = true;
+    	/*
     	//For Left Side
     	if(robotLocation == positionLeft) {
     		straight(DRIVE_SPEED, 4);
@@ -71,33 +70,33 @@ public class AutonomousStraight extends Command {
     	
     	//For Right Side
     	if(robotLocation == positionRight) {
-    		straight(DRIVE_SPEED, 4);
-    	}
+    		straight(DRIVE_SPEED, 4); 
+    	}*/
     	
     }
     	
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-    	robotLocation = DS.getLocation();
-    	robotTimer.reset();
     	robotTimer.start();
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+    	autoDrive.tankDrive(-DRIVE_SPEED, -DRIVE_SPEED);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return false;
+        return Timer.getMatchTime() < 2.5;
     }
 
     // Called once after isFinished returns true
     @Override
     protected void end() {
+    	autoDrive.tankDrive(0,  0);
     }
 
     // Called when another command which requires one or more of the same
@@ -106,10 +105,13 @@ public class AutonomousStraight extends Command {
     protected void interrupted() {
     }
     
-    private void straight(double speed, double time) {
+    /*private void straight(double speed, double time) {
     	robotTimer.reset();
     	while(robotTimer.get() < time) {
-    		autoDrive.tankDrive(speed, speed);
+    		autoDrive.tankDrive(-speed, -speed);
+    	}
+    	if (robotTimer.get() > time) {
+    		autoDrive.tankDrive(0,0);
     	}
     }
 
@@ -121,13 +123,15 @@ public class AutonomousStraight extends Command {
 			while(robotTimer.get() < time) {
 				autoDrive.tankDrive(-speed, speed);
 			}
+			autoDrive.tankDrive(0, 0);
 		}
 	
 		else if(direction == CW) {
 			while(robotTimer.get() < time) {
 				autoDrive.tankDrive(speed, -speed);
 			}
+			autoDrive.tankDrive(0, 0);
 		}
 			
-	}
+	} */
 }

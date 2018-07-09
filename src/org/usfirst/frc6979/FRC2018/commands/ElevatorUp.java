@@ -28,7 +28,6 @@ public class ElevatorUp extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -36,7 +35,7 @@ public class ElevatorUp extends Command {
     protected void execute() {
 
     	double speed;
-    	SmartDashboard.putBoolean("Active", true);
+    	SmartDashboard.putBoolean("EU Active", true);
     	if (elevator.getTopLimit()) {
     		speed = this.upSpeed;
     	} else {
@@ -44,17 +43,16 @@ public class ElevatorUp extends Command {
     	}
     	elevator.setElevatorSpeed(speed);
     	SmartDashboard.putNumber("Motor Speed", speed);
-    	
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-    	        if (elevator.getTopLimit()){
-    	        	return true;
-    	        } else {
-    	        	return false;
-    	        }
+    	    if (elevator.getTopLimit()){
+    	      	return true;
+    	    } else {
+    	      	return false;
+    	    }
     }
 
     // Called once after isFinished returns true

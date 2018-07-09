@@ -2,41 +2,33 @@ package org.usfirst.frc6979.FRC2018.subsystems;
 
 
 
-import edu.wpi.first.wpilibj.command.Subsystem;
-
 import org.usfirst.frc6979.FRC2018.OI;
 import org.usfirst.frc6979.FRC2018.RobotMap;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import org.usfirst.frc6979.FRC2018.subsystems.*;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
-
-/**
- * m
- */
 public class Drive extends Subsystem {
-
-	/* I don't think we need this? DJH
-	 * 
-    private final WPI_TalonSRX frontLeft = RobotMap.drivefrontLeft;
-    private final WPI_TalonSRX backLeft = RobotMap.drivebackLeft;
-    private final WPI_TalonSRX frontRight = RobotMap.drivefrontRight;
-    private final WPI_TalonSRX backRight = RobotMap.drivebackRight;
-    
-    private final SpeedControllerGroup driveLeft = RobotMap.driveLeft;
-    private final SpeedControllerGroup driveRight = RobotMap.driveRight;
-    */
 	
     
     private final DifferentialDrive differentialDrive = RobotMap.driveDifferentialDrive;
     OI oi = new OI();
     Elevator elevator = new Elevator();
+    Arm arm = new Arm();
+    Lift lift = new Lift();
+    
+    private double LIFT_SPEED = 1;
 	
+    /*
     private double joyYLeftRamped;
     private double joyYLeftRampTime;
     private double joyYRightRamped;
-    private double joyYRightRampTime;
+    private double joyYRightRampTime; */
     
     @Override
     public void initDefaultCommand() {
@@ -48,24 +40,91 @@ public class Drive extends Subsystem {
 
     
     public void periodic() {
-    	
-    	
-    	
+    	//SmartDashboard.getNumber("Pneumatic Pressure", RobotMap.compressorArm.getCompressorCurrent());    	
     	// Put code here to be run every loop
-    	
     	// Instantiate OI
     	
-    	/*differentialDrive.tankDrive(oi.ramp(oi.getJoyYLeft(), this.joyYLeftRamped, 0.1, 1, this.joyYLeftRampTime), 
-    			oi.ramp(oi.getJoyYRight(), this.joyYRightRamped, 0.1, 1, this.joyYRightRampTime));
-    	*/
-    	differentialDrive.tankDrive(oi.getJoyYLeft()/2, oi.getJoyYRight()/2);   
-    	//TODO: If power sent to motor, check for limit switch
-    	elevator.setElevatorSpeed((-oi.getRightTrigger())/2);
-}
-   
+    	//Motor Output Maximums
+    	differentialDrive.setMaxOutput(0.8);
+        RobotMap.elevator.setNeutralMode(NeutralMode.Brake);
 
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
+    	
+    	
+    	/*
+    	 *  DRIVE COMMAND
+    	 */
+    	differentialDrive.tankDrive(oi.getJoyYLeft(), oi.getJoyYRight());   
+    	
+    	
+    	
+    	/*
+    	 *  ELEVATOR COMMAND
+    	 */
+    	
+    	//TODO: If power sent to motor, check for limit switch
+    	//elevator.setElevatorSpeed((-oi.getRightTrigger())/1.5);
+    	
+    	//TODO: 		Figure out which one is which
+    	if(/*(RobotMap.elevator.get() < 0 || RobotMap.elevator.get() > 0) && Elevator.getTopLimit()*/ oi.getRightTrigger() > 0.2 ) {
+    		elevator.setElevatorSpeed(0);    		
+    	}
+    	
+    	else if(/*(RobotMap.elevator.get() < 0 || RobotMap.elevator.get() > 0) && !Elevator.getTopLimit()*/oi.getLeftTrigger() > 0.2 ) {
+    		elevator.setElevatorSpeed(-0.5);    		
+    	} 
+    	
+    	
+    	/*
+    	 *  LIFT COMMAND
+    	 */
+    	
+    	//Up
+    	if(oi.getLeftBumper() && Lift.getTopLimit() ) {
+    		lift.setLiftSpeed(-LIFT_SPEED);
+    	}
+    	//Down
+    	else if(oi.getRightBumper() && !Lift.getBottomLimit()) {
+    		lift.setLiftSpeed(LIFT_SPEED);
+    	} else {
+    		lift.setLiftSpeed(0);
+    	}
+    	
+    	
+    	
+    	/*
+    	 *  ARM COMMAND
+    	 */
+    	
+    	//TODO: TEST!!!
+    	if(oi.getButtonA()) {
+    		arm.setArmSpeed(-1);
+    	}
+    	
+    	else if(oi.getButtonB()) {
+    		arm.setArmSpeed(1);
+    	} else {
+    		arm.setArmSpeed(0);
+    	}
+    	
+    	
+    	
+    	//Close arm with right dpad, open with left
+    	if(oi.getButtonY()) {
+    		arm.closeArm(Value.kReverse);
+    	}
+    	else if(oi.getButtonX()) {
+    		arm.closeArm(Value.kForward);
+    	} 
+    	
+    	
+    	if(oi.getSelect()) {
+    		RobotMap.winchMotor.set(0.6);
+    	} else {
+    		RobotMap.winchMotor.set(0);
+    	}
+    	
+    	SmartDashboard.putString("Solenoid State", arm.getArmState());
+}
     
     public void stop() {
     	differentialDrive.tankDrive(0,0);

@@ -11,13 +11,10 @@
 
 package org.usfirst.frc6979.FRC2018;
 
-import org.usfirst.frc6979.FRC2018.commands.ElevatorDown;
-import org.usfirst.frc6979.FRC2018.commands.ElevatorUp;
-
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.buttons.*;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 
 /**
@@ -25,6 +22,7 @@ import edu.wpi.first.wpilibj.buttons.*;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
+	/*
     //// CREATING BUTTONS
     // One type of button is a joystick button which is any button on a joystick.
     // You create one by telling it which joystick it's on and which button
@@ -54,12 +52,16 @@ public class OI {
     // Start the command when the button is released  and let it run the command
     // until it is finished as determined by it's isFinished method.
     // button.whenReleased(new ExampleCommand());
+     
+     */
 
 
 
     public JoystickButton buttonA;
     public JoystickButton buttonB; 
     public Timer rampTime = new Timer();
+	public boolean dpadRight;
+	public boolean dpadLeft;
 
     
     //public Joystick driveController;
@@ -75,12 +77,12 @@ public class OI {
         driveController = new XboxController(0);
         
     	
-    	
-
+    	/*
         buttonB = new JoystickButton(driveController, 2);
         buttonB.whileHeld(new ElevatorUp());
         buttonA = new JoystickButton(driveController, 1);
         buttonA.whileHeld(new ElevatorDown());
+        */
         
         //SmartDashboard.putData("Autonomous Command", new AutonomousCommand());
         //SmartDashboard.putData("ElevatorUp", new ElevatorUp());
@@ -89,14 +91,68 @@ public class OI {
     }
 
 
-    public XboxController getdriveController() {
+    public XboxController getDriveController() {
         return driveController;
     }
+    
+    public boolean getSelect(){
+    	boolean joySelect = driveController.getBackButton();
+    	return joySelect;
+    }
+    
+    public boolean getRightBumper() {
+    	boolean joyBumpR = driveController.getBumper(Hand.kRight);
+    	return joyBumpR;
+    }
+    
+    public boolean getLeftBumper() {
+    	boolean joyBumpL = driveController.getBumper(Hand.kLeft);
+    	return joyBumpL;
+    }
+    
+    public boolean getButtonA() {
+    	boolean joyA = driveController.getAButton();
+    	return joyA;
+    }
+    
+    public boolean getButtonB() {
+    	boolean joyB = driveController.getBButton();
+    	return joyB;
+    }
+    
+    public boolean getButtonX() {
+    	boolean joyX = driveController.getXButton();
+    	return joyX;
+    }
+    
+    public boolean getButtonY() {
+    	boolean joyY = driveController.getYButton();
+    	return joyY;
+    }
+    
+    public boolean getDpadRight() {
+    	final int direction = driveController.getPOV();
 
+    	if(direction == 90){
+    		dpadRight = true;
+    	}
+    	return dpadRight;
+    }
+    
+    public boolean getDpadLeft() {
+    	final int direction = driveController.getPOV();
+
+    	if(direction == 270){
+    		dpadLeft = true;
+    	}
+    	return dpadLeft;
+    }
+    
     public double getJoyXRight() {
     	double joyXRight = driveController.getX(Hand.kRight);
     	return joyXRight;
     }
+    
     public double getJoyXLeft() {
     	double joyXLeft = driveController.getX(Hand.kLeft);
     	return joyXLeft;
@@ -106,6 +162,7 @@ public class OI {
     	double joyYRight = driveController.getY(Hand.kRight);
     	return joyYRight;
     }
+    
     public double getJoyYLeft() {
     	double joyYLeft = driveController.getY(Hand.kLeft);
     	return joyYLeft;
@@ -116,7 +173,13 @@ public class OI {
     	return joyRT;
     }
     
-    public double ramp(double valueSP, double valueTrack, double rampRateUp,double rampRateDown, double oldTime) {
+    public double getLeftTrigger() {
+    	double joyLT = driveController.getTriggerAxis(Hand.kLeft);
+    	return joyLT;
+    }
+    
+    
+    /* double ramp(double valueSP, double valueTrack, double rampRateUp,double rampRateDown, double oldTime) {
     	double deltaValue;
     	double timePeriod;
     	//valueSP = unconstrained SP
@@ -136,7 +199,7 @@ public class OI {
     		// No change in value track
     	}
     	return valueTrack;
-    }
+    } */
 
 }
 

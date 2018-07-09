@@ -45,7 +45,7 @@ public class Drive extends Subsystem {
     	// Instantiate OI
     	
     	//Motor Output Maximums
-    	differentialDrive.setMaxOutput(0.9);
+    	differentialDrive.setMaxOutput(0.8);
         RobotMap.elevator.setNeutralMode(NeutralMode.Brake);
 
     	

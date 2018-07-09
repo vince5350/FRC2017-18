@@ -11,25 +11,26 @@
 
 package org.usfirst.frc6979.FRC2018.commands;
 import org.usfirst.frc6979.FRC2018.RobotMap;
+import org.usfirst.frc6979.FRC2018.subsystems.Arm;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Timer;
+//import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 
 public class AutonomousStraight extends Command {
 	
-	private Timer robotTimer = new Timer();
+	//private Timer robotTimer = new Timer();
 	public DriverStation DS;
-	private final DifferentialDrive autoDrive = RobotMap.driveDifferentialDrive;
+	public Arm arm = new Arm();
+	//private final DifferentialDrive autoDrive = RobotMap.driveDifferentialDrive;
 
 	
 	
 	int robotLocation;
 	
-	private double TURN_SPEED = (1/3);
-	private boolean codeDone = false;
+	//private double TURN_SPEED = (1/3);
 
 	private double DRIVE_SPEED = 0.5;
 	
@@ -40,9 +41,9 @@ public class AutonomousStraight extends Command {
 	
 	//Used for turn
 		//Counter clockwise
-		private int CCW;
+		//private int CCW;
 		//Clockwise
-		private int CW;
+		//private int CW;
 	
 	
     public AutonomousStraight() {
@@ -78,31 +79,34 @@ public class AutonomousStraight extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-    	robotTimer.start();
+    	setTimeout(7.5);
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-    	autoDrive.tankDrive(-DRIVE_SPEED, -DRIVE_SPEED);
+    arm.closeArm(Value.kForward);
+    arm.closeArm(Value.kReverse);
+    	RobotMap.driveDifferentialDrive.tankDrive(-DRIVE_SPEED, -DRIVE_SPEED);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return Timer.getMatchTime() < 2.5;
-    }
+        return isTimedOut();
+        }
 
     // Called once after isFinished returns true
     @Override
     protected void end() {
-    	autoDrive.tankDrive(0,  0);
+    	RobotMap.driveDifferentialDrive.tankDrive(0,  0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
+    	end();
     }
     
     /*private void straight(double speed, double time) {

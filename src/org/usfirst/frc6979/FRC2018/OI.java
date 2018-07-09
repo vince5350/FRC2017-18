@@ -178,7 +178,7 @@ public class OI {
     }
     
     
-    public double ramp(double valueSP, double valueTrack, double rampRateUp,double rampRateDown, double oldTime) {
+    /* double ramp(double valueSP, double valueTrack, double rampRateUp,double rampRateDown, double oldTime) {
     	double deltaValue;
     	double timePeriod;
     	//valueSP = unconstrained SP
@@ -198,7 +198,7 @@ public class OI {
     		// No change in value track
     	}
     	return valueTrack;
-    }
+    } */
 
 }
 
